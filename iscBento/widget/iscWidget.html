@@ -1,0 +1,69 @@
+<div class="grid-block header align-justify">
+
+  <!--Left Side-->
+  <div class="grid-block vertical">
+    <div class="widget-title grid-content collapse">
+      {{ widgetCtrl.widget.name }}
+    </div>
+
+    <div class="refresh-status grid-content collapse slow fadeIn"
+         ng-show="widgetCtrl.lastUpdated">
+      {{ 'Last Updated' | translate }} {{ widgetCtrl.lastUpdated }}
+      <span class="icon refresh clickable" ng-include="'iscBento/svg/refresh.html'"></span>
+    </div>
+  </div>
+
+  <!--Right Side-->
+  <div class="grid-content collapse shrink gridster-item-content">
+
+    <span class="widget-menu clickable gridster-item-content"
+          ng-click="$event.stopPropagation()"
+          zf-hard-toggle="widget-menu-{{ $id }}">
+      <span class="icon more" ng-include="'iscBento/svg/more.html'"></span>
+    </span>
+
+    <zf-action-sheet id="widget-menu-{{ $id }}">
+      <zf-as-content position="bottom">
+        <ul>
+          <li>
+            <a zf-open="iscWidgetModal" ng-click="widgetCtrl.changeConfiguration(0); $parent.hide()">{{ 'Modify Sources' | translate }}</a>
+          </li>
+          <li>
+            <a zf-open="iscWidgetModal" ng-click="widgetCtrl.changeConfiguration(1); $parent.hide()">{{ 'Change Display Type' | translate }}</a>
+          </li>
+          <li>
+            <a zf-open="iscWidgetModal" ng-click="widgetCtrl.changeConfiguration(2); $parent.hide()">{{ 'Change Properties' | translate }}</a>
+          </li>
+          <li>
+            <a ng-click="widgetCtrl.deleteWidget(); close()">{{ 'Delete Widget' | translate }}</a>
+          </li>
+        </ul>
+      </zf-as-content>
+    </zf-action-sheet>
+
+  </div>
+</div>
+
+<div class="collapse widget-content"
+     ng-class="widgetCtrl.selectedDirective.type === 'table' ? 'grid-content' : 'grid-block vertical'">
+
+  <div class="spinner" ng-if="widgetCtrl.loading"><i class="fa fa-fw fa-spin fa-2x fa-spinner"></i></div>
+
+  <!--No Data Available-->
+  <div class="no-data grid-content collapse" ng-if="!widgetCtrl.data.length && !widgetCtrl.loading">
+    <p class="empty-message">{{ 'No Data Available' | translate }}</p>
+    <p><a ng-click="widgetCtrl.hideEmpty()">{{ 'Hide Empty Widgets' | translate }}</a></p>
+  </div>
+
+  <div class="icon more-columns clickable"
+       ng-show="widgetCtrl.showIndicator"
+       ng-include="'iscBento/svg/more-columns.html'">
+  </div>
+
+  <magicbox ng-if="!!widgetCtrl.config && widgetCtrl.data.length"
+            class="magicbox expand gridster-item-content"
+            ng-class="{ 'grid-block' : widgetCtrl.selectedDirective.type !== 'table' }"
+            meta="widgetCtrl.selectedDirective">
+  </magicbox>
+
+</div>

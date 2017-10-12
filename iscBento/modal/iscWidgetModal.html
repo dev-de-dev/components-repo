@@ -1,0 +1,184 @@
+<div zf-modal="" id="iscWidgetModal" class="large collapse">
+
+  <!-- Modal Header (Small Only) -->
+  <div class="grid-block vertical header show-for-small-only"
+       ng-include="'iscBento/modal/iscWidgetModalSmall.html'"></div>
+
+  <!-- Modal Header (Medium Up) -->
+  <div class="grid-block vertical header show-for-medium"
+       ng-include="'iscBento/modal/iscWidgetModalMedium.html'"></div>
+
+  <!--Parent Scroll Container (Modal Content)-->
+  <div id="scroll-div" class="grid-block wrap scrollable-horizontal modal-content">
+
+    <!-- Section One: Choose Resources -->
+    <div id="section-one" class="grid-block slide">
+      <div class="grid-content collapse scrollable align-center">
+        <section class="block-list">
+          <ul class="grid-block wrap align-center">
+            <!-- Resources -->
+            <li class="resource grid-block small-12 medium-6 large-3"
+                ng-repeat="endPoint in modalCtrl.endPoints track by $index">
+                <input type="checkbox"
+                       ng-model="endPoint.selected"
+                       ng-change="modalCtrl.updateSources( endPoint )"
+                       name="source"
+                       id="source-{{ endPoint.type }}">
+                <label for="source-{{ endPoint.type }}">{{ endPoint.type }}</label>
+            </li>
+          </ul>
+        </section>
+
+      </div>
+
+    </div>
+
+    <!-- Section Two: Display Type -->
+    <div id="section-two" class="slide">
+      <div class="grid-content collapse scrollable">
+
+        <section class="block-list">
+
+          <ul class="grid-block wrap align-spaced">
+
+            <li class="grid-block expand no-indent small-6 medium-6 large-3 align-center"
+                ng-repeat="displayObj in modalCtrl.displayTypes track by $index">
+
+                <div class="card expand padding clickable"
+                     ng-class="{ 'selected' : displayObj.selected }"
+                     ng-click="displayObj.selected = !displayObj.selected; modalCtrl.addTemplate( displayObj )">
+
+                    <div class="vertical grid-block display-type">
+                        <span ng-if="!!displayObj.icon"
+                              class="icon {{ displayObj.type }}"
+                              ng-include="displayObj.icon"></span>
+                        <i ng-if="!!displayObj.class" class="icon {{ displayObj.class }}"></i>
+                        <h5 class="text-center">{{ displayObj.name }}</h5>
+                    </div>
+                </div>
+            </li>
+          </ul>
+        </section>
+
+        <!--&lt;!&ndash; Show Subtype Options if they exist for selected Display Type &ndash;&gt;-->
+        <!--<div ng-show="modalCtrl.widget.display.template === 'chart'" class="grid-block">-->
+          <!--<div class="grid-content collapse">-->
+
+            <!--<div class="grid-block margin-top-double">-->
+              <!--<div class="grid-content collapse">-->
+                <!--<h5 class="text-center">Choose a Chart Type:</h5>-->
+              <!--</div>-->
+            <!--</div>-->
+
+            <!--<section class="block-list">-->
+
+              <!--<ul class="grid-block wrap align-spaced">-->
+
+                <!--<li class="grid-block expand no-indent small-6 medium-6 large-3 align-center"-->
+                  <!--ng-repeat="displayObj in modalCtrl.subTypes track by $index">-->
+
+                  <!--<div class="card expand padding clickable"-->
+                       <!--ng-class="{ 'selected' : modalCtrl.widget.display.template === displayObj.type }"-->
+                       <!--ng-click="modalCtrl.widget.display.template = displayObj.type">-->
+
+                    <!--<div class="vertical grid-block display-type">-->
+                      <!--<span ng-if="!!displayObj.icon"-->
+                            <!--class="icon {{ displayObj.type }}"-->
+                            <!--ng-include="displayObj.icon"></span>-->
+                      <!--<i ng-if="!!displayObj.class" class="icon {{ displayObj.class }}"></i>-->
+                      <!--<h5 class="text-center">{{ displayObj.name }}</h5>-->
+                    <!--</div>-->
+                  <!--</div>-->
+                <!--</li>-->
+              <!--</ul>-->
+            <!--</section>-->
+          <!--</div>-->
+        <!--</div>-->
+      </div>
+    </div>
+
+    <!-- Section Three: Choose Properties -->
+    <div id="section-three" ng-if="!!modalCtrl.tabs[2]" class="slide grid-block">
+      <div class="grid-content collapse scrollable">
+
+        <section class="block-list grid-block"
+                 ng-repeat="endPoint in modalCtrl.endPoints | filter : { selected : true }">
+
+          <ul class="grid-block wrap align-center small-8">
+            <!-- Select All Properties -->
+            <li class="select-all grid-block expand">
+              <input type="checkbox"
+                     ng-model="endPoint.allSelected"
+                     ng-change="modalCtrl.selectAll( endPoint )"
+                     id="selectAll-{{ endPoint.type }}">
+              <label for="selectAll-{{ endPoint.type }}">
+                  <span class="text-center">
+                      <span ng-if="endPoint.properties.length">{{ 'Select All Properties For' | translate }}</span>   <span ng-if="!endPoint.properties.length">{{ 'No Available Properties For' | translate }}</span> {{ endPoint.type }}
+                  </span>
+              </label>
+            </li>
+
+            <!-- Individual Properties -->
+            <li class="property grid-block small-12 medium-6 large-4"
+                ng-repeat="property in endPoint.properties track by $index">
+                <input type="checkbox"
+                       ng-model="property.selected"
+                       ng-change="modalCtrl.updateProperties( endPoint, property )"
+                       id="{{ property.key }}-{{ endPoint.type }}">
+                <label for="{{ property.key }}-{{ endPoint.type }}">
+                    <div class="grid-block">
+                        <input class="small-3"
+                               ng-if="property.selected"
+                               type="number"
+                               ng-model="property.order"
+                               ng-change="modalCtrl.changeOrder( endPoint, property )">
+                        <span class="small-9">{{ property.key }}</span>
+                    </div>
+                    <input type="text"
+                           ng-if="property.selected"
+                           placeholder="Rename {{ property.key }}"
+                           ng-model="property.name"
+                           ng-change="modalCtrl.renameProperty( property, endPoint.type )">
+                </label>
+            </li>
+          </ul>
+
+          <div class="small-4">
+
+              <label class="text-center">Include Results
+                  <input type="checkbox"
+                         ng-model="endPoint.params"
+                         ng-true-value="'?_include={{ endPoint.type }}:result'"
+                         ng-false-value="''"
+                         ng-change="modalCtrl.addParams( endPoint, endPoint.params )">
+              </label>
+
+              <ul class="grid-block wrap align-center extra-props"
+                  ng-repeat="( key, properties ) in endPoint"
+                  ng-if="key !== 'properties' && modalCtrl.isArray( properties ) && properties.length > 1">
+                <!-- Select All Properties -->
+                <li class="select-all grid-block expand">
+                    Select a {{ key }}
+                </li>
+
+                <!-- Individual Properties -->
+                <li class="property grid-block small-12 large-6"
+                    ng-repeat="property in properties track by $index">
+
+                    <input type="checkbox"
+                           ng-model="property.selected"
+                           ng-change="modalCtrl.changeExtraProperties( endPoint, properties, key )"
+                           id="key-{{ property.key }}-{{ endPoint.type }}">
+
+                    <label for="key-{{ property.key }}-{{ endPoint.type }}">{{ property.key }}
+                        {{ property.key }}
+                    </label>
+                </li>
+              </ul>
+          </div>
+      </section>
+
+    </div>
+  </div>
+
+</div>

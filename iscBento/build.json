@@ -1,0 +1,43 @@
+{
+  "dependencies"     : {
+    "scrollsnap-polyfill"      : {
+      "vendor" : {
+        "js" : [
+          "src/app/node_modules/scrollsnap-polyfill/dist/scrollsnap-polyfill.bundled.js"
+        ]
+      }
+    },
+    "js-detect-element-resize" : {
+      "vendor" : {
+        "js" : [
+          "src/app/node_modules/javascript-detect-element-resize/detect-element-resize.js"
+        ]
+      }
+    },
+    "highstock"                : {
+      "vendor" : {
+        "js" : [
+          "src/app/node_modules/highcharts/highstock.js"
+        ]
+      }
+    },
+    "highcharts"               : {
+      "vendor" : {
+        "js" : [
+          "src/app/node_modules/highcharts-ng/dist/highcharts-ng.js"
+        ]
+      }
+    },
+    "angular-gridster2"               : {
+      "vendor" : {
+        "js" : [
+          "src/app/node_modules/angular-gridster2/dist/gridster.js"
+        ]
+      }
+    }
+  },
+  "peerDependencies" : [
+    "api",
+    "magicbox"
+  ]
+}

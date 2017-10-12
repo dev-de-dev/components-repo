@@ -1,0 +1,52 @@
+<div class="{{column.class || 'fauxTable'}}">
+  <!--Custom Table Template-->
+  <!--title-->
+  <div ng-if="fauxTblCtrl.config.title" class="grid-block">
+    <h3 class="{{column.cssTitleClass || 'table-title'}}">{{fauxTblCtrl.config.title | translate}}</h3>
+  </div>
+
+  <!--empty data message-->
+  <div ng-if="fauxTblCtrl.data.length === 0 && fauxTblCtrl.getEmptyMessage()"
+       class="grid-block">
+    <p class="{{column.cssEmptyClass || 'empty-message'}}">
+      {{ (fauxTblCtrl.getEmptyMessage()) | translate}}
+    </p>
+  </div>
+
+  <div ng-if="fauxTblCtrl.data.length > 0" class="grid-block grid-table">
+
+    <!--thead-->
+    <div class="grid-block thead" ng-if="!fauxTblCtrl.config.hideHeader">
+      <div class="grid-block tr">
+        <div ng-repeat="column in fauxTblCtrl.config.columns | orderBy : 'order'"
+             ng-init="sortable = fauxTblCtrl.config.sortable && column.sortable !== false"
+             class="{{column.cssTHClass || 'grid-block th'}}"
+             ng-class="{'isc-sortable': sortable}">
+
+          <a ng-click="fauxTblCtrl.sort(column)" ng-if="sortable">{{column.key| translate}}
+            <i class="fa"
+               ng-class="{'fa-sort':null == fauxTblCtrl.getSort(column), 'fa-sort-asc': 'asc' == fauxTblCtrl.getSort(column), 'fa-sort-desc': 'desc' == fauxTblCtrl.getSort(column)}"></i>
+          </a>
+          <a ng-if="!sortable">{{column.key | translate}}</a>
+        </div>
+
+      </div>
+    </div>
+
+    <!--tbody-->
+    <div class="vertical grid-block expand tbody">
+      <div ng-repeat="row in fauxTblCtrl.data | filter:{} | orderBy:fauxTblCtrl.sortBy:fauxTblCtrl.sortDirection"
+           class="{{fauxTblCtrl.config.cssTRClass || 'grid-block tr'}}"
+           ng-click="fauxTblCtrl.config.onRowClick(row)">
+        <div ng-repeat="column in fauxTblCtrl.config.columns | orderBy : 'order'"
+             class="{{column.cssTDClass || 'grid-block td'}}"
+             data-title="{{column.key| translate}}"
+             ng-include="column.templateUrl || 'isc.fauxTable/cells/cell.'+ (column.type || 'string') + '.html'">
+            <!-- change this to get the templates from a different source-->
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+</div>

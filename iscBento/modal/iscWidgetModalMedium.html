@@ -1,0 +1,48 @@
+<!-- Title Bar -->
+<div class="title-bar">
+  <label class="center title align-center">
+    {{ !!modalCtrl.widget.id ? 'Modify Widget:' : 'Add Widget:' | translate }} {{ modalCtrl.activeTab.instructions }}
+  </label>
+  <span zf-close="" class="left"></a><button class="small">{{ 'Cancel' | translate }}</button></a></span>
+  <span zf-close="" class="right"><button ng-click="modalCtrl.save()" class="small">{{ 'Done' | translate }}</button></span>
+</div>
+
+<!-- Wizard Steps -->
+<div class="grid-block align-justify wizard-steps">
+
+  <!-- Previous Step -->
+  <div class="grid-block shrink align-left">
+    <div class="grid-content collapse">
+      <button class="small hollow flat svg-icon"
+              ng-click="modalCtrl.scroll( true )"
+              ng-disabled="modalCtrl.activeTab === modalCtrl.tabs[0]">
+          <span class="caret-back" ng-include="'iscBento/svg/caret-left.html'"></span>{{ 'Previous' | translate }}
+      </button>
+    </div>
+  </div>
+
+  <!-- Step / Widget Title -->
+  <div class="grid-block medium-7 large-6 align-center active-step">
+    <div class="grid-content collapse">
+      <span class="inline-label">
+        <span class="form-label">{{ 'Widget Title:' | translate }}</span>
+        <input type="text"
+               placeholder="Name Your Widget"
+               ng-model="modalCtrl.widget.name"
+               ng-change="modalCtrl.renameWidget( modalCtrl.widget.name )">
+      </span>
+    </span>
+    </div>
+  </div>
+
+  <!-- Next Step -->
+  <div class="grid-block shrink align-right">
+    <div class="grid-content collapse shrink">
+      <button class="small hollow flat svg-icon"
+              ng-click="modalCtrl.scroll()"
+              ng-disabled="modalCtrl.activeTab === modalCtrl.tabs[modalCtrl.tabs.length - 1]">
+          {{ 'Next' | translate }}<span class="caret-next" ng-include="'iscBento/svg/caret-right.html'"></span>
+      </button>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,326 @@
+/* -----------------------------------------
+/* Widget Config Modal
+/* Add Widget / Edit Widget Workflow
+/* ---------------------------------------- */
+
+@mixin centerer {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+/* Widget Add/Config Modal */
+#iscWidgetModal .modal {
+  position: relative;
+  background: transparent;
+
+  //Detelete after FW Update
+  @include breakpoint(small) {
+    max-width: map-get($modal-sizes, small);
+    max-height: 100vh;
+  }
+
+  @include breakpoint(medium) {
+    max-width: map-get($modal-sizes, medium);
+    max-height: 90vh;
+  }
+
+  @include breakpoint(large) {
+    max-width: map-get($modal-sizes, large);
+    max-height: 90vh;
+  }
+
+  // Modal Header
+  .header {
+    background: #fff;
+    overflow: hidden;
+
+    .button, button, input[type="submit"], input[type="button"] {
+      margin: 0;
+      line-height: 1;
+
+      &.svg-icon {
+        padding: 0.575em .65em;
+
+        svg {
+          height: 12px;
+          width: 12px;
+          fill: $accent-color;
+        }
+      }
+    }
+
+    .title-bar {
+      @media #{$small} {padding: 0.675rem 0.75rem;}
+      background: $gray;
+
+      .title {
+        font-weight: $font-weight-semi-bold;
+        font-size: 1.125rem;
+
+        @media #{$small} {font-size: 1rem;}
+        @media #{$medium} {font-size: 1rem;}
+      }
+    }
+
+    .wizard-steps {
+      position: relative;
+      overflow: hidden;
+
+      @include breakpoint(medium) {padding: 0.75rem; border-bottom: 1px solid $app-border-color;}
+
+      .inline-label {
+        margin: 0;
+        font-weight: $font-weight-semi-bold;
+        @media #{$small} {font-size: 0.9rem;}
+        @media #{$medium} {font-size: 1rem;}
+
+        .form-label {
+          background: transparent;
+          border: 0;
+          padding: 0 0.5rem 0 0;
+        }
+
+        input[type="text"] {
+          border: 0;
+          border-bottom: 1px solid $gray-dark;
+          max-width: 400px;
+          height: 1.75rem;
+          border-radius: 0;
+          font-weight: $font-weight-normal;
+          padding: 0 0 0 0.25rem;
+
+          @media #{$small} {font-size: 0.9rem; max-width: 300px;}
+          @media #{$medium} {font-size: 1rem;}
+        }
+      }
+
+      .active-step {
+
+        @media #{$small} {
+          border-bottom: 1px solid $app-border-color;
+          padding: 0.5rem 0.75rem;
+        }
+
+        @include breakpoint(medium) {
+          padding: 0;
+          border-bottom: 0;
+          font-size: 1rem;
+        }
+
+        h6 {
+          text-align: center;
+          font-weight: $font-weight-semi-bold;
+          margin: 0;
+
+          @media #{$small} {font-size: 0.9rem; line-height: 1.9; vertical-align: middle;}
+        }
+      }
+    }
+  }
+
+  #scroll-div {
+    background: #eee;
+    position: relative;
+    max-height: 100vh; // need this for vertical scroll container
+    -webkit-overflow-scrolling: touch;
+    scroll-snap-type: mandatory;
+
+    // older browser support
+    scroll-snap-destination: 0% 100%;
+    scroll-snap-points-x: repeat(100%);
+
+    // Modal Content
+    &.modal-content {
+      overflow-x: auto;
+      flex-wrap: nowrap;
+      position: relative;
+
+      .wrap {flex-wrap: wrap;}
+
+      .grid-block .grid-content.scrollable {
+        overflow-x: auto;
+        width: 900px;
+        max-width: 100%;
+        transition: all 0.3s ease-out;
+
+        .wrap {flex-wrap: wrap;}
+      }
+
+      [disabled] {@include disabled;}
+    }
+
+    .slide {
+      padding: 1rem 0.5rem 10rem 1rem;
+      width: 900px;
+      height: 100%;
+      min-width: 100%;
+      overflow-y: visible;
+
+      // Blocklists
+      section {
+        margin: 0 auto;
+        overflow-y: visible;
+
+        &.block-list {
+          margin: 0 auto 2rem auto;
+          overflow-y: visible;
+
+          ul {
+            margin: 0 auto 0 auto;
+            overflow-y: visible;
+            height: 100%;
+
+            &.extra-props {
+              height: unset;
+              padding-left: 1rem;
+            }
+
+            li {
+              border: 0;
+
+              &:not(.select-all) {
+                padding-bottom: 0.5rem;
+                padding-right: 0.5rem;
+
+                input[type="number"] {
+                  margin-top: -10px;
+                }
+
+                input[type="checkbox"], input[type="radio"] {
+                  display: none;
+
+                  & + label {
+                    display: inline;
+                    font-size: $blocklist-fontsize;
+                    margin: 0;
+                    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, .2), 0 1px 1px 0 rgba(0, 0, 0, .14), 0 2px 1px -1px rgba(0, 0, 0, .12);
+                    border-radius: 2px;
+                    width: 100%;
+                    background: #fff;
+                    line-height: 1.4;
+                    padding: 0.8rem 0.5rem 0.8rem 1rem;
+                    min-height: 50px;
+                    text-overflow: ellipsis;
+                    white-space: nowrap;
+                    overflow: hidden;
+
+                    input {
+                      padding: 0;
+                    }
+                  }
+
+                  &:checked + label {
+                    color: $success-color;
+                    line-height: 1.4;
+
+                    &::before {
+                      @include image-checkmark($success-color);
+                      margin-top: 0;
+                      color: $success-color;
+                      line-height: 1.4;
+                      vertical-align: middle;
+
+                      svg {fill: $success-color;}
+                    }
+                  }
+                }
+              }
+
+              &.select-all {
+                margin: 1rem auto 2rem auto;
+
+                input[type="checkbox"], input[type="radio"] {
+                  display: none;
+
+                  &:checked + label {
+                    color: $light-text;
+                    line-height: 1.4;
+
+                    &::before {
+                      @include image-checkmark($light-text);
+                      margin-top: 0;
+                      color: $light-text;
+                      line-height: 1.4;
+                      vertical-align: middle;
+                      width: 1.5em;
+                      height: 1.5em;
+
+                      svg {fill: $light-text;}
+                    }
+                  }
+                }
+
+                label {
+                  background: $success-color;
+                  color: $light-text;
+                  padding: 0.75rem 1rem 0.75rem 1rem;
+                  border-bottom: 3px solid scale-color($success-color, $lightness: -14%);
+                  box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 1px 0px;
+                  border-radius: 3px;
+                  width: 98%;
+                  line-height: 1.4;
+                  min-height: 50px;
+
+                  @media #{$small} {padding: 0.8rem 0.5rem 0.8rem 1rem;}
+                  @media #{$medium} {width: 70%;}
+
+                  &:hover, &:focus {
+                    background: scale-color($success-color, $lightness: -24%);
+                    border-bottom-color: scale-color($success-color, $lightness: -24%);
+                    color: $light-text;
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+
+    #section-two {
+      padding-top: 2rem;
+
+      section {
+        @include fill-parent;
+        margin-top: 2rem;
+
+        .card {
+          padding: 2rem;
+          width: 100%;
+          height: 100%;
+          height: 150px;
+          width: 150px;
+          margin-bottom: 0;
+          position: relative;
+          overflow: visible;
+
+          .display-type {
+            @include centerer;
+
+            h5 {margin: 0;}
+
+            .icon {
+              margin: 0 auto;
+
+              svg {
+                height: 3rem;
+                width: 3rem;
+                fill: $dark-text;
+              }
+            }
+          }
+
+          &.selected {
+            color: $success-color;
+
+            .icon {
+              svg {fill: $success-color;}
+            }
+          }
+        }
+      }
+    }
+  }
+}

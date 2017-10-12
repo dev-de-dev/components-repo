@@ -1,0 +1,50 @@
+<!--Dashboard Header Elements-->
+<div ng-include="'iscBento/dashboardHeader.html'"
+     class="small-vertical medium-horizontal grid-block align-justify dashboard-header"></div>
+
+<gridster options="bentoCtrl.options"
+          class="isc-bento"
+          zf-if="not medium"
+          ng-init="bentoCtrl.setGridSize( 'desktop', 4 )">
+
+  <gridster-item class="widget"
+                 item="widget.desktop"
+                 ng-repeat="widget in bentoCtrl.widgets | filter: bentoCtrl.ngRepeatFilter track by widget.id"
+                 ng-if="!widget.empty">
+
+       <isc-widget widget="widget"
+                   params="bentoCtrl.params"
+                   api-service="bentoCtrl.apiService">
+       </isc-widget>
+  </gridster-item>
+</gridster>
+
+<gridster options="bentoCtrl.options"
+          class="isc-bento"
+          zf-if="medium only"
+          ng-init="bentoCtrl.setGridSize( 'tablet', 2 )">
+
+  <gridster-item class="widget"
+                 item="widget.tablet"
+                 ng-repeat="widget in bentoCtrl.widgets | filter: bentoCtrl.ngRepeatFilter track by widget.id"
+                 ng-if="!widget.empty">
+
+    <isc-widget widget="widget"
+                params="bentoCtrl.params"
+                api-service="bentoCtrl.apiService">
+    </isc-widget>
+  </gridster-item>
+</gridster>
+
+<a isc-tooltip
+   class="button fab bottom-right fixed"
+   title="Add New Widget"
+   zf-open="iscWidgetModal">
+  <span class="icon plus" ng-include="'iscBento/svg/plus.html'"></span>
+</a>
+
+<isc-widget-modal end-points="bentoCtrl.endPoints"></isc-widget-modal>
+
+<isc-bento-panel params="bentoCtrl.params"></isc-bento-panel>
+
+<dashboard-settings></dashboard-settings>

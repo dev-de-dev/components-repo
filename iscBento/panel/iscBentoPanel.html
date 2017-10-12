@@ -1,0 +1,53 @@
+<div zf-panel id="detailsPanel" class="panel-fixed" position="right" zf-closeable>
+
+  <div ng-repeat="source in panelCtrl.sources track by $index">
+    <!-- Panel Header -->
+    <div class="grid-block header">
+      <div class="grid-block">
+        <h6 class="title">{{ source.type }} Details</h6>
+      </div>
+      <div ng-if="$first" class="grid-block wrap padding">
+        <a zf-close="" class="close-button clickable" title="Close Panel">×</a>
+      </div>
+    </div>
+
+    <!-- Panel Content -->
+    <div class="grid-block vertical content">
+      <div class="grid-content collapse">
+        <ul class="data-properties">
+          <li class="item"
+              ng-repeat="property in source.properties track by $index">
+              <label>{{ property.name || property.key }}:</label> <p>{{ panelCtrl.detailsData | lodash : "get" : property.path : "(No data)" }}</p>
+          </li>
+          <li class="item"
+              ng-if="panelCtrl.detailsData.resource.result">
+            <label>Included Results: </label>
+            <ul>
+              <li class="item grid-block align-justify wrap"
+                  ng-repeat="entry in panelCtrl.detailsData.resource.result track by entry.resource.id">
+                <label class="clickable small-11">
+                  <a ng-if="!entry.resource.valueString"
+                     ng-click="panelCtrl.getChartData( entry )"
+                     class="clickable">{{ entry.resource.code.coding[0].display }}</a>
+                  <span ng-if="entry.resource.valueString">{{ entry.resource.valueString }}</span>
+                </label>
+
+                <i isc-tooltip
+                   ng-if="!!entry.config"
+                   class="fa fa-fw fa-plus-circle clickable small-1"
+                   title="Add New Widget"
+                   ng-click="panelCtrl.addChartToDashboard( entry.widget )">
+                </i>
+
+                <highchart ng-if="!!entry.config"
+                           id="timeline"
+                           config="entry.config">
+                </highchart>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>

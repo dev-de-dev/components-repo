@@ -1,0 +1,49 @@
+<!--Dashboard Title-->
+<div class="grid-block small-12 medium-7 large-4">
+  <div class="grid-content collapse">
+    <h1 class="page-title">{{ bentoCtrl.options.pageTitle | translate }}</h1>
+
+    <div class="dashboard-settings">
+      <span isc-tooltip
+            title="{{ 'Global layout' | translate }}"
+            class="icon fa fa-lock locked"></span>
+      <a isc-tooltip
+         title="{{ 'Dashboard Settings' | translate }}"
+         zf-open="dashboardSettingsPane">
+        <span class="icon fa fa-gear"></span>
+      </a>
+    </div>
+
+  </div>
+</div>
+
+<!--Select Condition-->
+<div class="grid-block small-12 medium-4 large-2"
+     ng-if="bentoCtrl.filters.length">
+  <div class="grid-content collapse">
+    <select ng-options="filter as filter.display for filter in bentoCtrl.filters"
+            ng-model="bentoCtrl.selectedFilter"
+            ng-change="bentoCtrl.filterRecord( bentoCtrl.selectedFilter )">
+      <option value="" selected="">{{ 'Choose your filter' | translate }}</option>
+    </select>
+  </div>
+</div>
+
+<!--Hide Empty-->
+<div class="grid-block small-12 medium-5 large-3" ng-if="bentoCtrl.emptyWidgetsHidden">
+  <div class="grid-content collapse">
+    <button ng-click="bentoCtrl.hideEmpty()">{{ 'Show Empty Widgets' | translate }}</button>
+  </div>
+</div>
+
+<!--Record Search-->
+<div class="grid-block small-12 medium-5 large-3 record-search">
+  <div class="grid-content collapse">
+
+    <div class="inline-label">
+      <span class="form-label prefix"><div class="svg-icon search" ng-include="'iscBento/svg/search.html'"></div></span>
+      <input type="search" class="search-input prefix" placeholder="{{ 'Search' | translate }}">
+    </div>
+
+  </div>
+</div>

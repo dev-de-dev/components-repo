@@ -1,0 +1,190 @@
+// import vendor css
+@import "../../node_modules/highcharts-ng/dist/highcharts-ng";
+@import "../../node_modules/highcharts/css/highcharts";
+@import "../../node_modules/angular-gridster2/dist/gridster";
+
+/* -----------------------------------------
+/* Dashboard Styling
+/* ---------------------------------------- */
+
+.isc-page {
+
+  &.dashboard, &.admin {
+    padding-right: 0;
+    padding-left: 0;
+    overflow-x: hidden;
+    overflow-y: auto;
+    position: relative;
+    height: 100%;
+    width: 100%;
+
+    @media #{$medium} {
+      padding-left: 0;
+    }
+
+    @media #{$small} {
+      padding-right: 0;
+      padding-left: 0;
+    }
+
+    .dashboard-container {
+
+      .dashboard-header {
+        padding: 0 1rem 0 1rem;
+        margin-bottom: .5rem;
+
+        h1.page-title, select {
+          margin: 0;
+        }
+
+        /* Record Search */
+        .record-search {
+
+          .inline-label {
+            @include breakpoint(medium) {margin-bottom: 0;}
+
+            .prefix {
+              // need a mixin for this
+              &.form-label {
+                background: $light-text;
+                border-right: 0;
+                color: $gray-dark;
+                padding-right: 0;
+
+                .svg-icon {
+                  &.search {
+
+                    svg {
+                      fill: $gray-dark;
+                      width: 1rem;
+                      height: 1rem;
+                    }
+                  }
+                }
+              }
+            }
+          }
+
+          .search-input {
+            border-left: 0;
+
+            &:focus {border-color: $app-border-color;}
+          }
+        }
+
+        .dashboard-settings {
+          .icon {
+            &.locked {
+              color: $gray-dark;
+            }
+          }
+
+        }
+      }
+
+      // FAB Button
+      .button.fab {
+
+        &.fixed {
+          position: fixed;
+        }
+
+        #plus-icon {
+          fill: $light-text;
+        }
+      }
+    }
+    gridster {
+      background: $body-background;
+
+      &.scrollVertical {
+        position: absolute;
+        overflow-y: hidden;
+      }
+    }
+  }
+}
+
+/* Dashboard Settings Panel */
+.dashboard-settings-panel {
+
+  form {
+    &.setting {
+      margin-bottom: 1.25rem;
+      cursor: pointer;
+      border: none;
+
+      .setting-title {
+        padding: 1rem;
+        background: #f8f8f8;
+        border-left: 1px solid #dedede;
+        border-right: 1px solid #dedede;
+        border-top: 3px solid $secondary-color;
+        box-shadow: rgba(0, 0, 0, 0.180392) 0px 1px 2px 0px, rgba(0, 0, 0, 0.137255) 0px 1px 1px 0px, rgba(0, 0, 0, 0.117647) 0px 2px 1px -1px;
+        transition: all 0.3s ease-out;
+      }
+
+      .options {
+        padding: 1rem 0.25rem;
+
+        .switch-label {
+          margin-bottom: 0;
+          margin-top: 0.35rem;
+          vertical-align: middle;
+        }
+      }
+    }
+  }
+}
+
+
+
+/* Details Panel */
+.panel {
+
+  .header {
+    background: #f8f8f8;
+    padding: 0.5rem 0.75rem;
+    border-bottom: 1px solid #dbdbdb;
+    margin-bottom: 1rem;
+
+    .title {
+      margin: 0;
+      font-weight: $font-weight-bold;
+      font-size: 1rem;
+    }
+
+    .close-button {
+      top: 0.2rem;
+      right: 0;
+    }
+  }
+
+  .content {
+    padding: 0 0.75rem;
+
+    ul {
+      &.data-properties {
+        list-style-type: none;
+        margin: 0;
+
+        li.item {
+          margin-bottom: 1rem;
+
+          label, p {
+            margin: 0;
+            display: inline;
+          }
+
+          label {
+            font-weight: $font-weight-semi-bold;
+          }
+
+          i {
+            color: $accent-color;
+          }
+        }
+      }
+    }
+  }
+}
